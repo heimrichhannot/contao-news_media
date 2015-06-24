@@ -1,6 +1,6 @@
-# News Media 
+# Media 
 
-Media support for news.
+News Player Element.
 
 ## Template Code
 

@@ -12,10 +12,24 @@
  * Fields
  */
 
-$GLOBALS['TL_LANG']['tl_news']['addMedia'][0] = 'Video/Audio Datei hinzufügen';
-$GLOBALS['TL_LANG']['tl_news']['addMedia'][1] = 'Wählen Sie diese Option, wenn Sie der Nachricht eine eigene Video-/Audiodatei hinzufügen möchten.';
+$GLOBALS['TL_LANG']['tl_news']['addMedia'][0] = 'Video/Audio hinzufügen';
+$GLOBALS['TL_LANG']['tl_news']['addMedia'][1] = 'Wählen Sie diese Option, wenn Sie der Nachricht Video-/Audio hinzufügen möchten.';
+
+$GLOBALS['TL_LANG']['tl_news']['playerType'][0] = 'Videoquelle';
+$GLOBALS['TL_LANG']['tl_news']['playerType'][1] = 'Wählen Sie den Typ der Videoquelle hier aus.';
+
+$GLOBALS['TL_LANG']['tl_news']['playerUrl'][0] = 'Video/Audio-Url';
+$GLOBALS['TL_LANG']['tl_news']['playerUrl'][1] = 'Geben Sie hier die Url zur Video/Audio-Datei an.';
+
 
 /**
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_news']['media_legend'] = 'Media-Einstellungen';
+
+/**
+ * Reference
+ */
+
+$GLOBALS['TL_LANG']['tl_news']['playerType_reference']['playerUrl'] = 'Externe URL';
+$GLOBALS['TL_LANG']['tl_news']['playerType_reference']['playerSRC'] = 'Datei';

@@ -23,14 +23,14 @@ $dc['palettes']['__selector__'][] = 'addMedia';
  * Subpalettes
  */
 
-$dc['subpalettes']['addMedia'] = 'playerSRC,posterSRC,autoplay';
+$dc['subpalettes']['addMedia'] = 'playerType,posterSRC,autoplay';
 
 /**
  * Fields
  */
 $arrFields = array
 (
-	'addMedia'  => array
+	'addMedia'   => array
 	(
 		'label'     => &$GLOBALS['TL_LANG']['tl_news']['addMedia'],
 		'exclude'   => true,
@@ -38,12 +38,40 @@ $arrFields = array
 		'eval'      => array('submitOnChange' => true),
 		'sql'       => "char(1) NOT NULL default ''"
 	),
-	'playerSRC' => &$GLOBALS['TL_DCA']['tl_content']['fields']['playerSRC'],
-	'autoplay'  => &$GLOBALS['TL_DCA']['tl_content']['fields']['autoplay'],
-	'posterSRC' => &$GLOBALS['TL_DCA']['tl_content']['fields']['posterSRC']
+	'playerType' => array
+	(
+		'label'     => &$GLOBALS['TL_LANG']['tl_news']['playerType'],
+		'default'   => 'text',
+		'exclude'   => true,
+		'filter'    => true,
+		'inputType' => 'select',
+		'default'   => 'playerUrl',
+		'options'   => array('playerSRC', 'playerUrl'),
+		'reference' => &$GLOBALS['TL_LANG']['tl_news']['playerType_reference'],
+		'eval'      => array('chosen' => true, 'submitOnChange' => true),
+		'sql'       => "varchar(32) NOT NULL default ''"
+	),
+	'playerSRC'  => &$GLOBALS['TL_DCA']['tl_content']['fields']['playerSRC'],
+	'playerUrl'  => array
+	(
+		'label'     => &$GLOBALS['TL_LANG']['tl_news']['playerUrl'],
+		'exclude'   => true,
+		'search'    => true,
+		'inputType' => 'text',
+		'eval'      => array('mandatory' => false, 'decodeEntities' => true, 'maxlength' => 255),
+		'sql'       => "varchar(255) NOT NULL default ''"
+	),
+	'autoplay'   => &$GLOBALS['TL_DCA']['tl_content']['fields']['autoplay'],
+	'posterSRC'  => &$GLOBALS['TL_DCA']['tl_content']['fields']['posterSRC']
 );
 
 $dc['fields'] = array_merge($dc['fields'], $arrFields);
+
+/**
+ * Callbacks
+ */
+
+$dc['config']['onload_callback'][] = array('tl_news_media', 'modifyPalettes');
 
 
 class tl_news_media extends \Backend
@@ -56,15 +84,29 @@ class tl_news_media extends \Backend
 	 *
 	 * @return mixed
 	 */
-//	public function modifyPalettes()
-//	{
-//		$objNews = \NewsModel::findById($this->Input->get('id'));
-//		$dc      = &$GLOBALS['TL_DCA']['tl_news'];
-//		if (!$objNews->addPreviewImage) {
-//			$dc['subpalettes']['addMedia'] =
-//				str_replace('playerSRC,posterSRC,playerSize,autoplay,', '', $dc['subpalettes']['addMedia']);
-//		}
-//	}
+	public function modifyPalettes(\DataContainer $dc)
+	{
+		$objNews = \NewsModel::findById($dc->id);
+
+		if($objNews === null) return;
+
+		$dc      = &$GLOBALS['TL_DCA']['tl_news'];
+
+		// default replacement == playerUrl
+		$strReplace = 'playerType,playerUrl';
+
+		if($objNews !== null)
+		{
+			switch($objNews->playerType)
+			{
+				case 'playerSRC':
+					$strReplace = str_replace('playerType', 'playerType,playerSRC', $dc['subpalettes']['addMedia']);
+				break;
+			}
+		}
+
+		$dc['subpalettes']['addMedia'] = str_replace('playerType', $strReplace, $dc['subpalettes']['addMedia']);
+	}
 
 
 }
