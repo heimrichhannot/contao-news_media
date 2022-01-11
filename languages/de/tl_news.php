@@ -21,6 +21,9 @@ $GLOBALS['TL_LANG']['tl_news']['playerType'][1] = 'Wählen Sie den Typ der Video
 $GLOBALS['TL_LANG']['tl_news']['playerUrl'][0] = 'Video/Audio-Url';
 $GLOBALS['TL_LANG']['tl_news']['playerUrl'][1] = 'Geben Sie hier die Url zur Video/Audio-Datei an.';
 
+$GLOBALS['TL_LANG']['tl_news']['autoplay'][0] = 'Autoplay';
+$GLOBALS['TL_LANG']['tl_news']['autoplay'][1] = 'Das Video automatisch beim Laden der Seite abspielen.';
+
 
 /**
  * Legends

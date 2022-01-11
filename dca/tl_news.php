@@ -61,9 +61,17 @@ $arrFields = array
 		'eval'      => array('mandatory' => false, 'decodeEntities' => true, 'maxlength' => 255),
 		'sql'       => "varchar(255) NOT NULL default ''"
 	),
-	'autoplay'   => &$GLOBALS['TL_DCA']['tl_content']['fields']['autoplay'],
+	'autoplay'   => [
+        'label'                   => &$GLOBALS['TL_LANG']['tl_news']['autoplay'],
+        'exclude'                 => true,
+        'inputType'               => 'checkbox',
+        'eval'                    => array('tl_class'=>'w50 m12'),
+        'sql'                     => "char(1) NOT NULL default ''"
+    ],
 	'posterSRC'  => &$GLOBALS['TL_DCA']['tl_content']['fields']['posterSRC']
 );
+
+
 
 $dc['fields'] = array_merge($dc['fields'], $arrFields);
 

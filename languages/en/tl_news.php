@@ -19,7 +19,10 @@ $GLOBALS['TL_LANG']['tl_news']['playerType'][0] = 'Videosource';
 $GLOBALS['TL_LANG']['tl_news']['playerType'][1] = 'Select a video source type.';
 
 $GLOBALS['TL_LANG']['tl_news']['playerUrl'][0] = 'Video/Audio-Url';
-$GLOBALS['TL_LANG']['tl_news']['playerUrl'][1] = 'Select an video or audio file from the filesystem.';
+$GLOBALS['TL_LANG']['tl_news']['playerUrl'][1] = 'Choose an video or audio file from the filesystem.';
+
+$GLOBALS['TL_LANG']['tl_news']['autoplay'][0] = 'Autoplay';
+$GLOBALS['TL_LANG']['tl_news']['autoplay'][1] = 'Automatically play the video when the page loads.';
 
 
 /**
