@@ -9,21 +9,33 @@
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
  */
 
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
+
 $dc = &$GLOBALS['TL_DCA']['tl_news'];
 
-\Controller::loadDataContainer('tl_content');
+Controller::loadDataContainer('tl_content');
 
 /**
  * Palettes
  */
-$dc['palettes']['default']        = str_replace('{image_legend}', '{media_legend},addMedia;{image_legend}', $dc['palettes']['default']);
+PaletteManipulator::create()
+    ->addLegend('media_legend', 'image_legend', PaletteManipulator::POSITION_BEFORE)
+    ->addField('addMedia', 'media_legend', PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('default', 'tl_news')
+    ->applyToPalette('internal', 'tl_news')
+    ->applyToPalette('article', 'tl_news')
+    ->applyToPalette('external', 'tl_news')
+;
+
 $dc['palettes']['__selector__'][] = 'addMedia';
 
 /**
  * Subpalettes
  */
 
-$dc['subpalettes']['addMedia'] = 'playerType,posterSRC,autoplay';
+//$dc['subpalettes']['addMedia'] = 'playerType,posterSRC,autoplay';
+
+$dc['subpalettes']['addMedia'] = 'playerType';
 
 /**
  * Fields
@@ -41,7 +53,6 @@ $arrFields = array
 	'playerType' => array
 	(
 		'label'     => &$GLOBALS['TL_LANG']['tl_news']['playerType'],
-		'default'   => 'text',
 		'exclude'   => true,
 		'filter'    => true,
 		'inputType' => 'select',
@@ -82,39 +93,32 @@ $dc['fields'] = array_merge($dc['fields'], $arrFields);
 $dc['config']['onload_callback'][] = array('tl_news_media', 'modifyPalettes');
 
 
-class tl_news_media extends \Backend
+class tl_news_media extends Backend
 {
-	/**
-	 * Modify the palette according to the checkboxes selected
-	 *
-	 * @param mixed
-	 * @param DataContainer
-	 *
-	 * @return mixed
-	 */
-	public function modifyPalettes(\DataContainer $dc)
-	{
-		$objNews = \NewsModel::findById($dc->id);
+    /**
+     * Modify the palette according to the checkboxes selected
+     */
+    public function modifyPalettes(DataContainer $dc): void
+    {
+        $objNews = NewsModel::findById($dc->id);
 
-		if($objNews === null) return;
+        if ($objNews === null) {
+            return;
+        }
 
-		$dc      = &$GLOBALS['TL_DCA']['tl_news'];
+        $pm = PaletteManipulator::create()
+            ->addField('posterSRC', 'playerType')
+            ->addField('autoplay', 'playerType');
 
-		// default replacement == playerUrl
-		$strReplace = 'playerType,playerUrl';
+        switch ($objNews->playerType) {
+            case 'playerSRC':
+                $pm->addField('playerSRC', 'playerType');
+                break;
+            case 'playerUrl':
+                $pm->addField('playerUrl', 'playerType');
+                break;
+        }
 
-		if($objNews !== null)
-		{
-			switch($objNews->playerType)
-			{
-				case 'playerSRC':
-					$strReplace = str_replace('playerType', 'playerType,playerSRC', $dc['subpalettes']['addMedia']);
-				break;
-			}
-		}
-
-		$dc['subpalettes']['addMedia'] = str_replace('playerType', $strReplace, $dc['subpalettes']['addMedia']);
-	}
-
-
+        $pm->applyToSubpalette('addMedia', 'tl_news');
+    }
 }

@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2023-11-01
+- Changed: dropped support for php < 7.4
+- Changed: dropped support for contao < 4.9
+- Fixed: palette issues with contao 4
+
 ## [1.1.1] - 2022-01-11
 - Fixed: issue with contao 4.9 
 
